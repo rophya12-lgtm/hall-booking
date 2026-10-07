@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Resource Booking - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>College Resource Booking</h1>
+        <p>Department Resource Management System</p>
+    </header>
+
+    <!-- Authentication Guard Loading Screen (Hidden once verified) -->
+    <div id="authGuardLoading" style="text-align: center; padding: 70px 20px;">
+        <div style="font-size: 40px; margin-bottom: 15px;">🔒</div>
+        <h2 style="color: #4f46e5; margin: 0 0 10px 0;">Verifying Authentication...</h2>
+        <p style="color: #64748b; font-size: 15px;">Checking your login session. Please wait...</p>
+    </div>
+
+    <!-- Main Protected Dashboard (Hidden until user logs in) -->
+    <div class="container" id="mainContainer" style="display: none;">
+
+        <!-- User Profile & Session Bar -->
+        <div class="card" style="padding: 16px 24px; margin-bottom: 20px;">
+            <div class="user-profile-header">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <span class="user-greeting">Logged in as:</span>
+                    <b id="userEmailDisplay">user@college.edu</b>
+                    <span class="auth-badge">Active Session</span>
+                </div>
+                <button type="button" id="logoutBtn" class="logout-btn">Log Out 🚪</button>
+            </div>
+        </div>
+
+        <!-- Department Details -->
+        <div class="card">
+            <h2>Department Details</h2>
+            <label for="department">Select Department</label>
+            <select id="department">
+                <option value="">Select Department</option>
+                <option>MCA</option>
+                <option>BCA</option>
+                <option>HRM</option>
+                <option>B.Com</option>
+                <option>B.Sc Computer Science</option>
+            </select>
+        </div>
+
+        <!-- Available Resources -->
+        <div class="card">
+            <h2>Available Resources</h2>
+            <div class="resource-grid">
+                <div class="resource">
+                    <b>SCC Computer Lab</b>
+                    <span class="available">Available</span>
+                </div>
+                <div class="resource">
+                    <b>Barbier Hall</b>
+                    <span class="available">Available</span>
+                </div>
+                <div class="resource">
+                    <b>MCA Seminar Hall</b>
+                    <span class="available">Available</span>
+                </div>
+                <div class="resource">
+                    <b>KP Joseph Hall</b>
+                    <span class="available">Available</span>
+                </div>
+                <div class="resource">
+                    <b>MCA Library Room</b>
+                    <span class="available">Available</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="card">
+            <h2>Book a Resource</h2>
+
+            <form id="bookingForm" onsubmit="return false;">
+                <label for="resource">Resource</label>
+                <select id="resource" required>
+                    <option value="">Select Resource</option>
+                    <option>SCC Computer Lab</option>
+                    <option>Barbier Hall</option>
+                    <option>MCA Seminar Hall</option>
+                    <option>KP Joseph Hall</option>
+                    <option>MCA Library Room</option>
+                </select>
+
+                <label for="date">Date</label>
+                <input type="date" id="date" required>
+
+                <div class="time-row">
+                    <div>
+                        <label for="start">Start Time</label>
+                        <input type="time" id="start" required>
+                    </div>
+                    <div>
+                        <label for="end">End Time</label>
+                        <input type="time" id="end" required>
+                    </div>
+                </div>
+
+                <label for="purpose">Purpose</label>
+                <input type="text" id="purpose" placeholder="Example: Department meeting or lab session" required>
+
+                <button type="button" id="bookBtn">
+                    Book Resource
+                </button>
+            </form>
+
+            <div id="bookingStatus" class="feedback-msg"></div>
+        </div>
+
+        <!-- Real-Time Booking Results (Synced via Firestore) -->
+        <div class="card">
+            <div class="booking-results-header">
+                <h2>Real-Time Booking Schedule</h2>
+                <span id="liveStatusBadge" class="live-badge">🟢 Cloud Synced</span>
+            </div>
+
+            <div id="result">
+                <div class="loading-state">Loading bookings from Firebase...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <!-- Protected Dashboard Script -->
+    <script src="script.js"></script>
+
+</body>
+</html>
