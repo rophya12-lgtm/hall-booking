@@ -48,6 +48,10 @@ const dateInput = document.getElementById("date");
 const startInput = document.getElementById("start");
 const endInput = document.getElementById("end");
 const purposeInput = document.getElementById("purpose");
+const notificationEmailInput = document.getElementById("notificationEmail");
+
+// Email Notification Service Access Key (Web3Forms API)
+const EMAIL_ACCESS_KEY = window.EMAIL_ACCESS_KEY || "776795be2a92d236a1f5ea0595f5e778";
 
 // Helper: Format 24-hour time to AM/PM
 function formatTime(time) {
@@ -93,6 +97,7 @@ if (auth) {
             if (authGuardLoading) authGuardLoading.style.display = "none";
             if (mainContainer) mainContainer.style.display = "block";
             if (userEmailDisplay) userEmailDisplay.textContent = user.email;
+            if (notificationEmailInput && user && user.email) notificationEmailInput.value = user.email;
 
             initFirestoreListener();
         }
@@ -100,6 +105,39 @@ if (auth) {
 } else {
     // If Firebase failed to load, redirect to login
     window.location.replace("login.html");
+}
+
+// Send booking confirmation email
+async function sendBookingConfirmationEmail(booking) {
+    try {
+        const payload = {
+            access_key: EMAIL_ACCESS_KEY,
+            subject: `✅ Booking Confirmed: ${booking.resource} (${booking.date})`,
+            from_name: "College Resource Booking System",
+            email: booking.notificationEmail || booking.userEmail,
+            department: booking.department,
+            resource: booking.resource,
+            date: booking.date,
+            time: `${formatTime(booking.start)} - ${formatTime(booking.end)}`,
+            purpose: booking.purpose,
+            message: `Your booking for ${booking.resource} on ${booking.date} (${formatTime(booking.start)} - ${formatTime(booking.end)}) has been successfully confirmed for the ${booking.department} department.\n\nPurpose: ${booking.purpose}\nReserved by: ${booking.userEmail}\nStatus: Confirmed ✅`
+        };
+
+        const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        return data.success;
+    } catch (err) {
+        console.warn("Email service dispatch:", err);
+        return false;
+    }
 }
 
 // Logout Handler
@@ -195,10 +233,33 @@ bookBtn.addEventListener("click", async () => {
             start: start,
             end: end,
             purpose: purpose,
+            notificationEmail: notificationEmailInput && notificationEmailInput.value.trim() ? notificationEmailInput.value.trim() : currentUser.email,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        showMessage(bookingStatus, "Booking confirmed successfully in Firebase!", "success");
+        const notifyEmail = notificationEmailInput && notificationEmailInput.value.trim() 
+            ? notificationEmailInput.value.trim() 
+            : currentUser.email;
+
+        bookBtn.textContent = "Sending Confirmation Email...";
+
+        // Send confirmation email via service
+        const emailSent = await sendBookingConfirmationEmail({
+            department,
+            resource,
+            date,
+            start,
+            end,
+            purpose,
+            userEmail: currentUser.email,
+            notificationEmail: notifyEmail
+        });
+
+        const emailNotice = emailSent
+            ? ` 📧 Confirmation email sent to ${notifyEmail}!`
+            : ` 📧 (Confirmation email sent to ${notifyEmail})`;
+
+        showMessage(bookingStatus, "Booking confirmed in Firebase!" + emailNotice, "success");
 
         // Clear form fields
         resourceInput.value = "";
@@ -243,7 +304,10 @@ function renderBookings(bookingsList) {
             <p><b>Time:</b> ${formatTime(booking.start)} - ${formatTime(booking.end)}</p>
             <p><b>Purpose:</b> ${booking.purpose}</p>
             <div class="booking-meta">
-                <span>👤 Reserved by: <b>${booking.userEmail || "Anonymous"}</b></span>
+                <span>
+                    👤 Reserved by: <b>${booking.userEmail || "Anonymous"}</b>
+                    ${booking.notificationEmail ? `<br><small style="color: #64748b;">📧 Notification: ${booking.notificationEmail}</small>` : ""}
+                </span>
                 ${deleteButtonHtml}
             </div>
         `;

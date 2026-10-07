@@ -82,8 +82,8 @@ if (auth) {
         if (user) {
             showMessage(`Already logged in as ${user.email}. Redirecting to booking dashboard...`, "success");
             setTimeout(() => {
-                window.location.href = "index.html";
-            }, 1200);
+                window.location.replace("index.html");
+            }, 800);
         }
     });
 }

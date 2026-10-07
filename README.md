@@ -1,36 +1,28 @@
-# College Resource Booking - Firebase Auth & Database
+# 🏛️ College Resource Booking System
 
-This project provides a full-featured College Resource Booking system integrated with:
-- **Firebase Authentication** (Sign up, Log in, Log out, session persistence)
-- **Cloud Firestore Database** (Real-time booking storage, conflict detection, user cancellation)
+A modern College Resource Booking system integrated with:
+- **Firebase Authentication** (Email/Password & Google Sign-In with protected dashboard route)
+- **Cloud Firestore Database** (Real-time reservation syncing & conflict detection)
+- **Automated Email Notifications** (Web3Forms API key configured to send booking confirmation slips)
 
-Your API keys for Firebase project **`college-hall-booking-139a9`** are already configured and active!
+---
+
+## 🔑 Integrated APIs & Keys
+- **Email Confirmation API (Web3Forms):** `776795be2a92d236a1f5ea0595f5e778`
+  - Configured in: [`email-config.js`](email-config.js) & [`script.js`](script.js)
+  - Purpose: Automatically sends reservation confirmation emails to students/faculty upon booking.
+- **Firebase Project:** `college-hall-booking-139a9`
+  - Configured in: [`firebase-config.js`](firebase-config.js)
+  - Features: Auth (Email/Pass + Google) & Firestore Database.
 
 ---
 
 ## 📂 Project Structure
-
-- **[`login.html`](login.html)**: Dedicated Login and Account Registration page.
-- **[`login.js`](login.js)**: Handles authentication, validation, and auto-redirect to the dashboard.
-- **[`index.html`](index.html)**: Main Resource Booking Dashboard with user session bar, booking form, and live schedule.
-- **[`script.js`](script.js)**: Firestore database queries, slot collision check, real-time sync, and reservation cancellation.
-- **[`style.css`](style.css)**: Modern gradient theme matching your college booking portal.
-- **[`firebase-config.js`](firebase-config.js)**: Central Firebase configuration.
-
----
-
-## 🚀 How to Run
-
-You can open the project directly in your browser without any terminal or server:
-
-1. **Double-click [`login.html`](login.html)** in Windows File Explorer (or [`index.html`](index.html)).
-2. Sign in or create an account with your college email.
-3. Book halls/labs and watch reservations sync to your Firebase Firestore database in real time!
-
----
-
-## ⚙️ Essential Firebase Console Checks
-
-Before testing, verify in your [Firebase Console](https://console.firebase.google.com/project/college-hall-booking-139a9/):
-1. **Authentication**: Go to **Authentication > Sign-in method** -> enable **Email/Password**.
-2. **Firestore Database**: Go to **Firestore Database** -> ensure database is created in **Test mode**.
+- [`index.html`](index.html): Main protected resource booking dashboard.
+- [`login.html`](login.html): Dedicated authentication portal (Google + Email/Password).
+- [`email-config.js`](email-config.js): Web3Forms Email API configuration (`776795be2a92d236a1f5ea0595f5e778`).
+- [`firebase-config.js`](firebase-config.js): Firebase project credentials.
+- [`script.js`](script.js): Dashboard logic, real-time Firestore database listener, and confirmation email dispatcher.
+- [`login.js`](login.js): Sign-in and sign-up handlers.
+- [`style.css`](style.css): Modern responsive UI styling.
+- [`push_to_github.bat`](push_to_github.bat): One-click deployment script.

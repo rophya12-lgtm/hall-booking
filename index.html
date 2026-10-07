@@ -38,6 +38,21 @@
             </div>
         </div>
 
+        <!-- Active APIs & Integrations Status Banner -->
+        <div class="api-status-banner">
+            <div class="api-status-title">
+                <span>⚡ Connected APIs:</span>
+            </div>
+            <div class="api-badges-group">
+                <span class="api-badge-pill email-api" title="Web3Forms Confirmation Service">
+                    ✉️ <b>Email API:</b> <code>776795be2a92d236a1f5ea0595f5e778</code>
+                </span>
+                <span class="api-badge-pill firebase-api" title="Firebase Project">
+                    🔥 <b>Firebase:</b> <code>college-hall-booking-139a9</code>
+                </span>
+            </div>
+        </div>
+
         <!-- Department Details -->
         <div class="card">
             <h2>Department Details</h2>
@@ -111,6 +126,9 @@
                 <label for="purpose">Purpose</label>
                 <input type="text" id="purpose" placeholder="Example: Department meeting or lab session" required>
 
+                <label for="notificationEmail">Confirmation Email <span style="font-size: 12px; color: #4338ca; font-weight: normal;">(Automated via API: <code>776795be2a92d236a1f5ea0595f5e778</code>)</span></label>
+                <input type="email" id="notificationEmail" placeholder="e.g. yourname@college.edu" required>
+
                 <button type="button" id="bookBtn">
                     Book Resource
                 </button>
@@ -137,6 +155,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <!-- Email Notification API Config -->
+    <script src="email-config.js"></script>
 
     <!-- Protected Dashboard Script -->
     <script src="script.js"></script>

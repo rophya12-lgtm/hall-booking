@@ -24,7 +24,7 @@ git init
 git add .
 
 echo [3/4] Committing code...
-git commit -m "College Resource Booking with Firebase Auth and Firestore Database"
+git commit -m "College Resource Booking with Firebase Auth, Firestore Database, and Email Notifications"
 
 echo [4/4] Configuring remote and pushing to main...
 git branch -M main
